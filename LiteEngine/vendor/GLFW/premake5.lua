@@ -1,7 +1,7 @@
 project "GLFW"
     kind "StaticLib"
     language "C"
-    staticruntime "on"          -- ADDED: was missing entirely, caused all LNK4098/LNK2019 errors
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -21,7 +21,6 @@ project "GLFW"
 
     filter "system:windows"
         systemversion "latest"
-        -- removed "-std=c11" and "-lgdi32": these are GCC flags, MSVC ignores/warns on them (D9002 warnings)
         files
         {
             "src/win32_init.c",
@@ -38,6 +37,46 @@ project "GLFW"
         {
             "_GLFW_WIN32",
             "_CRT_SECURE_NO_WARNINGS"
+        }
+
+    filter "system:macosx"
+        toolset "clang"
+        pic "On"
+        files
+        {
+            "src/cocoa_init.m",
+            "src/cocoa_joystick.m",
+            "src/cocoa_monitor.m",
+            "src/cocoa_window.m",
+            "src/cocoa_time.c",
+            "src/posix_thread.c",
+            "src/nsgl_context.m",
+            "src/egl_context.c",
+            "src/osmesa_context.c"
+        }
+        defines
+        {
+            "_GLFW_COCOA"
+        }
+
+    filter "system:linux"
+        pic "On"
+        files
+        {
+            "src/x11_init.c",
+            "src/x11_monitor.c",
+            "src/x11_window.c",
+            "src/xkb_unicode.c",
+            "src/posix_time.c",
+            "src/posix_thread.c",
+            "src/glx_context.c",
+            "src/egl_context.c",
+            "src/osmesa_context.c",
+            "src/linux_joystick.c"
+        }
+        defines
+        {
+            "_GLFW_X11"
         }
 
     filter "configurations:Debug"

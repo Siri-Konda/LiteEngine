@@ -12,8 +12,12 @@
 #else
 #define LITEENGINE_API      // Static lib: no dllexport/import needed
 #endif
+#define LE_DEBUGBREAK() __debugbreak()
+#elif defined(LE_PLATFORM_MACOS) || defined(LE_PLATFORM_LINUX)
+#define LITEENGINE_API
+#define LE_DEBUGBREAK() __builtin_trap()
 #else
-#error LiteEngine only supports Windows!
+#error LiteEngine only supports Windows, macOS, and Linux!
 #endif
 
 #ifdef LE_DEBUG
@@ -21,8 +25,8 @@
 #endif
 
 #ifdef LE_ENABLE_ASSERTS
-#define LE_ASSERT(x, ...) { if(!(x)) { LE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#define LE_CORE_ASSERT(x, ...) { if(!(x)) { LE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define LE_ASSERT(x, ...) { if(!(x)) { LE_ERROR("Assertion Failed: {0}", __VA_ARGS__); LE_DEBUGBREAK(); } }
+#define LE_CORE_ASSERT(x, ...) { if(!(x)) { LE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); LE_DEBUGBREAK(); } }
 #else
 #define LE_ASSERT(x, ...)
 #define LE_CORE_ASSERT(x, ...)

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef LE_PLATFORM_WINDOWS
+#if defined(LE_PLATFORM_WINDOWS) || defined(LE_PLATFORM_MACOS) || defined(LE_PLATFORM_LINUX)
 
 extern LiteEngine::Application* LiteEngine::CreateApplication();
 

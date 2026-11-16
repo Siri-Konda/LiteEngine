@@ -28,3 +28,5 @@
 
 LiteEngine/vendor/** linguist-vendored
 Sandbox/src/miniaudio.h linguist-vendored
+
+*.sh text eol=lf
